@@ -1,0 +1,5 @@
+Amazon Prime,andrevier,andrevier@outlook.com,ubauba,amazon.com,NA
+Camboja,LilaDeNaver,lila@gmail.com,amoCamboja108,camboja.com,NA
+Instagram,LilaDeNaver,lila@gmail.com,amoParis108,instagram.com,NA
+Facebook,satimbancos,satimbancos@gmail.com,amoCamboja108,facebook.com,NA
+Linkedin,Maria Buena,marib@gmail.com,trabalho108,linkedin.com,NA
