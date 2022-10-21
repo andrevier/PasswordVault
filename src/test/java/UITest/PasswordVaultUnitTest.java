@@ -48,5 +48,14 @@ public class PasswordVaultUnitTest {
         Assertions.assertEquals("NA",ui.getKey(0).getComments());
     }
     
+    @Test
+    public void searchKeyTest() {
+        String searchWord = "gmail" + System.lineSeparator() + "2";
+        bais = new ByteArrayInputStream(searchWord.getBytes());
+        ui.searchKeys();
+        Assertions.assertEquals("", Byte.MAX_VALUE);
+    }
+            
+    
     
 }

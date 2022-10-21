@@ -13,8 +13,10 @@ import Data.Key;
 public class PasswordVault {
 
     public static void main(String[] args) {
+        CSVData data = new CSVData(System.getProperty("user.dir") + 
+                                   "\\keys.txt");
         Scanner scanner = new Scanner(System.in);
-        UI userInterface = new UI(scanner);
+        UI userInterface = new UI(scanner,data.getKeysList());
         userInterface.start();    
        
     }

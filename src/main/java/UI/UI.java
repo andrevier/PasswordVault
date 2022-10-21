@@ -4,6 +4,7 @@
 package UI;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.HashSet;
 import Data.Key;
 
 
@@ -26,17 +27,19 @@ public class UI {
         // Start the user queries.
         while(true) {
             System.out.println("Password Vault");
-            System.out.println("1 - Add a password");
-            System.out.println("2 - Search keys");
+            System.out.println("1 - Add a key");
+            System.out.println("2 - Search for keys");
             System.out.println("3 - Exit");
             String word = this.scanner.nextLine();
             
-            if (word.contains("3")) {
+            if (word.equals("3")) {
                 System.out.println("Exit...");
                 break;
-            } else if (word.contains("1")) {
+            } else if (word.equals("1")) {
                 this.addKey();
-            }            
+            } else if (word.equals("2")) {
+                this.searchKeys();
+            }
             
         }
     }
@@ -106,21 +109,69 @@ public class UI {
         return this.keys.get(number);
     }
     
-    public ArrayList<Integer> searchKeys() {
-        // Look for the words in each key object.
+    public void searchKeys() {
+        // Search for the words in each key object.
         String words;
-        ArrayList<Integer> positions = new ArrayList<>();
+        ArrayList<Key> keyChoice = new ArrayList<Key>();
+        String option = "";
         while (true) {
+            // Search block: The search words must be case insensitive.
             System.out.print("Key words:");
-            words = this.scanner.nextLine();
+            words = this.scanner.nextLine().toLowerCase();
+            String keyData = "";
+            int keyIndex = 0;
+            for (Key item: this.keys) {
+                keyData = item.toString().toLowerCase();
+                
+                // If contains the searched terms, keep the key object.
+                if(keyData.contains(words)) {
+                    keyChoice.add(item);
+                    System.out.println(keyIndex + " - " + 
+                            item.getKeyName());
+                    keyIndex++;
+                }  
+            }
             
-            for (int i = 0; i < this.keys.size(); i++) {
-                if(this.keys.get(i).contains(words)) {
-                    positions.add(i);
+            if (keyChoice.isEmpty()) {
+                System.out.println("(R) to return to the menu;" +
+                                   " 'Enter' to search again.");
+            } else {
+                System.out.println("Select the number of the key;" + 
+                                   " (R) for return to menu;" + 
+                                   " 'Enter' to search again.");
+            }
+            
+            option = this.scanner.nextLine();
+                        
+            if (option.equals("R")) {
+                break;
+            } else if (option.equals("") || option.equals(" ")) {
+                // Case where the user wants to search again.
+                System.out.println("");                
+            } else {
+                // Cases for valid numbers from the search keys on screen.
+                int itemNumber = -1;
+                boolean isNumber = true;
+                
+                // Test if it's a number.
+                try {
+                    itemNumber = Integer.parseInt(option);
+                    isNumber = true;
+                } catch (Exception e) {
+                    itemNumber = -1;
+                    isNumber = false;
+                    System.out.println("not a number.");
+                }
+                // If is a valid number, get the key's name. 
+                if (isNumber && ((keyIndex >= itemNumber) 
+                                 && (0 <= itemNumber))) {
+                    Key key = keyChoice.get(itemNumber);
+                    
+                    System.out.println(key.toString());
                 }
             }
-            return positions;          
+            // Empty the list to another round.
+            keyChoice.clear();
         }
     }
-        
 }
