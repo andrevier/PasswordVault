@@ -44,31 +44,39 @@ public class UI {
         }
     }
     
+    public Key addKeyFields(Key newKeyObj) {
+        // User interface for adding the key's fields.
+        //0
+        System.out.print("Key name: ");
+        newKeyObj.setKeyName(this.scanner.nextLine()); 
+        //1
+        System.out.print("User name: ");
+        newKeyObj.setUserName(this.scanner.nextLine());
+        //2
+        System.out.print("Email: ");
+        newKeyObj.setEmail(this.scanner.nextLine());
+        //3
+        System.out.print("Password: ");
+        newKeyObj.setPassword(this.scanner.nextLine());
+        //4
+        System.out.print("Website: ");
+        newKeyObj.setWebsite(this.scanner.nextLine());
+        //5
+        System.out.print("Any comments? ");
+        newKeyObj.setComments(this.scanner.nextLine());
+        return newKeyObj;
+    }
+    
     public void addKey() {
         // Add a new key to the list.
-        Key item = new Key();
-        String option;
+        
+        String option = "";
         while (true) {
             System.out.println("Adding a password...");
-            //0
-            System.out.print("Key name: ");
-            item.setKeyName(this.scanner.nextLine()); 
-            //1
-            System.out.print("User name: ");
-            item.setUserName(this.scanner.nextLine());
-            //2
-            System.out.print("Email: ");
-            item.setEmail(this.scanner.nextLine());
-            //3
-            System.out.print("Password: ");
-            item.setPassword(this.scanner.nextLine());
-            //4
-            System.out.print("Website: ");
-            item.setWebsite(this.scanner.nextLine());
-            //5
-            System.out.print("Any comments? ");
-            item.setComments(this.scanner.nextLine());
-            //6
+            
+            // Prompt to the user to add the key's fields.
+            Key item = this.addKeyFields(new Key());
+            
             System.out.println("Return to menu (R); Save and return (S);");
             System.out.println("Re-type the keys (T); Save and add another key (A);");
             
@@ -110,29 +118,28 @@ public class UI {
     }
     
     public void searchKeys() {
-        // Search for the words in each key object.
-        String words;
-        ArrayList<Key> keyChoice = new ArrayList<Key>();
+        // Search for the word in each key object.
+        String word;
+        ArrayList<Key> listOfKeys = new ArrayList<Key>();
         String option = "";
         while (true) {
-            // Search block: The search words must be case insensitive.
+            // Search block: The search word must be case insensitive.
             System.out.print("Key words:");
-            words = this.scanner.nextLine().toLowerCase();
+            word = this.scanner.nextLine().toLowerCase();
             String keyData = "";
             int keyIndex = 0;
             for (Key item: this.keys) {
                 keyData = item.toString().toLowerCase();
                 
                 // If contains the searched terms, keep the key object.
-                if(keyData.contains(words)) {
-                    keyChoice.add(item);
-                    System.out.println(keyIndex + " - " + 
-                            item.getKeyName());
+                if(keyData.contains(word)) {
+                    listOfKeys.add(item);
+                    System.out.println(keyIndex + " - " + item.getKeyName());
                     keyIndex++;
                 }  
             }
             
-            if (keyChoice.isEmpty()) {
+            if (listOfKeys.isEmpty()) {
                 System.out.println("(R) to return to the menu;" +
                                    " 'Enter' to search again.");
             } else {
@@ -162,16 +169,37 @@ public class UI {
                     isNumber = false;
                     System.out.println("not a number.");
                 }
+                
                 // If is a valid number, get the key's name. 
                 if (isNumber && ((keyIndex >= itemNumber) 
                                  && (0 <= itemNumber))) {
-                    Key key = keyChoice.get(itemNumber);
+                    Key key = listOfKeys.get(itemNumber);
                     
                     System.out.println(key.toString());
+                    
+                    // Add edit key.
+                    System.out.println("Edit key? (Y/N)");
+                    option = this.scanner.nextLine();
+                    
+                    if (option.equals("N")) {
+                        System.out.println("");
+                    } else if (option.equals("Y")) {
+                        Key newKey = this.addKeyFields(new Key());
+                        
+                        // Substitute the new key in the old key place at the 
+                        // list.
+                        this.keys.set(this.keys.indexOf(key),
+                                newKey);
+                        System.out.println("before editing...");
+                        System.out.println(key);
+                        System.out.println("after editing...");
+                        System.out.println(newKey);
+                    }
+                   
                 }
             }
             // Empty the list to another round.
-            keyChoice.clear();
+            listOfKeys.clear();
         }
     }
 }

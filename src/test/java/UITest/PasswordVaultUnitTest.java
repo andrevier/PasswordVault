@@ -1,6 +1,7 @@
 package UITest;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -17,6 +18,7 @@ import Data.CSVData;
 
 public class PasswordVaultUnitTest {
     static InputStream bais;
+    static ByteArrayOutputStream outContent;
     static UI ui;
     public PasswordVaultUnitTest() {
                 
@@ -28,6 +30,9 @@ public class PasswordVaultUnitTest {
                                    "\\keys.txt");
         // Reassign the input stream. 
         bais = new ByteArrayInputStream(" ".getBytes());
+        
+        // Reassign the output stream.
+        System.setOut(new PrintStream(outContent));
         
         Scanner scan = new Scanner(bais);            
         ui = new UI(scan, data.getKeysList());  
@@ -52,8 +57,9 @@ public class PasswordVaultUnitTest {
     public void searchKeyTest() {
         String searchWord = "gmail" + System.lineSeparator() + "2";
         bais = new ByteArrayInputStream(searchWord.getBytes());
+        ui.newScanner(new Scanner(bais));
         ui.searchKeys();
-        Assertions.assertEquals("", Byte.MAX_VALUE);
+        Assertions.assertEquals("", );
     }
             
     
